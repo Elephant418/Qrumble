@@ -1,8 +1,0 @@
-<?php
-
-require_once( '../Qrumble/Qrumble.php' );
-
-$qrumble = new Qrumble( 'my_site' );
-echo $qrumble->render;
-
-?>
