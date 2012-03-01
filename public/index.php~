@@ -21,6 +21,5 @@ $qrumble->add_configuration( 'http://localhost/Qrumble/public/', array( 'Qrumble
 $qrumble->render( );
 
 ?>
-
 <body>
 </html>
