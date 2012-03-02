@@ -77,7 +77,7 @@ class Qrumble {
 
 			// Error 404 ?
 			if ( $path == '/' ) {
-				return $this->get_page_404( $original_path );
+				return get_page_404( $original_path );
 			}
 			$path = substr( $path, 0, -1 );
 		}
@@ -102,7 +102,7 @@ class Qrumble {
 		}
 
 		// Error 404
-		return $this->get_page_404( $original_path );
+		return get_page_404( $original_path );
 		
 	}
 	private function get_page_404( $original_path ) {

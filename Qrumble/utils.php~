@@ -13,7 +13,7 @@ function endswith( $hay, $needle ) {
 function istartswith( $hay, $needle ) {
   return startswith( strtolower( $hay ), strtolower( $needle ) );
 }
-function iendswith( $hay, $needle ) {
+function iendswith($hay, $needle) {
   return endswith( strtolower( $hay ), strtolower( $needle ) );
 }
 function contains( $hay, $needle ) {
