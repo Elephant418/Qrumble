@@ -1,5 +1,10 @@
 <?php
 
+/* This file is part of the Qrumble project.
+ * Qrumble is a free and unencumbered software released into the public domain.
+ * For more information, please refer to <http://unlicense.org/>
+ */
+
 require( dirname( __FILE__ ) . '/utils.php' );
 require( dirname( __FILE__ ) . '/Module_Manager.class.php' );
 
@@ -19,16 +24,24 @@ class Qrumble {
 	  CONSTRUCTOR                   
 	 *************************************************************************/
 	public function __construct( ) {
-		$url = $_SERVER['SERVER_NAME'] . urldecode( $_SERVER['REQUEST_URI'] );
-		if ( contains( $url, '?' ) ) {
-			$url = substr( $url, 0, strpos( $url, '?' ) );
-		}
-		if ( ! contains( $url, '/' ) ) {
-			$url .= '/';
-		}
-		$this->request_url = $url;
+		
+		$format_path = function( ) {
+			$path = urldecode( $_SERVER['REQUEST_URI'] );
+			if ( contains( $path, '?' ) ) {
+				$path = substr( $url, 0, strpos( $path, '?' ) );
+			}
+			if ( ! contains( $path, '/' ) ) {
+				$path .= '/';
+			}
+			return $path;
+		};
+		$format_url = function( ) use ( $format_path ) {
+			return $_SERVER['SERVER_NAME'] . $format_path( );
+		};
+
+		$this->request_path = $format_path( );
+		$this->request_url = $format_url( );
 		$this->module_manager = new Module_Manager( );
-		$this->request_path = substr( $this->request_url, strpos( $this->request_url, '/' ) );
 	}
 
 

@@ -1,5 +1,10 @@
 <?php
 
+/* This file is part of the Qrumble project.
+ * Qrumble is a free and unencumbered software released into the public domain.
+ * For more information, please refer to <http://unlicense.org/>
+ */
+
 
 /**************************************************************************
             STRING MANIPULATION
@@ -13,7 +18,7 @@ function endswith( $hay, $needle ) {
 function istartswith( $hay, $needle ) {
   return startswith( strtolower( $hay ), strtolower( $needle ) );
 }
-function iendswith($hay, $needle) {
+function iendswith( $hay, $needle ) {
   return endswith( strtolower( $hay ), strtolower( $needle ) );
 }
 function contains( $hay, $needle ) {

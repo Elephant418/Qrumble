@@ -53,7 +53,6 @@ class Module_Manager {
 	private function fetch_file( $path_file ) {
 		foreach ( $this->modules as $module ) {
 			$absolute_file_path = $this->modules_root_path . $module . $path_file;
-			echo $absolute_file_path.'<br>';
 			if ( is_file( $absolute_file_path ) ) {
 				return $absolute_file_path;
 			}
