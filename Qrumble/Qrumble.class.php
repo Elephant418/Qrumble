@@ -26,7 +26,7 @@ class Qrumble {
 	public function __construct( ) {
 		
 		$format_path = function( ) {
-			$path = urldecode( $_SERVER['REQUEST_URI'] );
+			$path = urldecode( $_SERVER[ 'REQUEST_URI' ] );
 			if ( contains( $path, '?' ) ) {
 				$path = substr( $url, 0, strpos( $path, '?' ) );
 			}
@@ -36,7 +36,7 @@ class Qrumble {
 			return $path;
 		};
 		$format_url = function( ) use ( $format_path ) {
-			return $_SERVER['SERVER_NAME'] . $format_path( );
+			return $_SERVER[ 'SERVER_NAME' ] . $format_path( );
 		};
 
 		$this->request_path = $format_path( );
@@ -49,21 +49,31 @@ class Qrumble {
 	  PUBLIC METHODS                   
 	 *************************************************************************/
 	public function add_configuration( $base_urls, $modules = NULL, $themes = NULL ) {
-		if ( ! is_array( $base_urls ) ) { 
-			$base_urls = array( $base_urls );
-		}
 
-		foreach ( $base_urls as $base_url ) {
-			if ( strpos( $base_url, '://' ) != -1 ) {
-				$base_url = substr( $base_url, strpos( $base_url, '://' ) + 3 );
+		$format_base_urls = function( $base_urls ) {
+			$format_base_url = function( $base_url ) {
+				if ( strpos( $base_url, '://' ) != -1 ) {
+					$base_url = substr( $base_url, strpos( $base_url, '://' ) + 3 );
+				}
+				if ( endswith( $base_url, '/' ) ) {
+					$base_url = substr( $base_url, 0, -1 );
+				}
+				return $base_url;
+			};
+			if ( ! is_array( $base_urls ) ) { 
+				$base_urls = array( $base_urls );
 			}
-			if ( endswith( $base_url, '/' ) ) {
-				$base_url = substr( $base_url, 0, -1 );
+			foreach ( array_keys( $base_urls ) as $index ) {
+				$base_urls[ $index ] = $format_base_url( $base_urls[ $index ] );
 			}
+			return $base_urls;
+		};
+
+		foreach ( $format_base_urls( $base_urls ) as $base_url ) {
 			if ( startswith( $this->request_url, $base_url ) ) {
-				$this->module_manager = new Module_Manager( $modules, $themes );
 				$this->base_url = $base_url;
 				$this->request_path = substr( $this->request_url, strlen( $base_url ) );
+				$this->module_manager = new Module_Manager( $modules, $themes );
 			}
 		}
 	}
@@ -82,17 +92,9 @@ class Qrumble {
 	 *************************************************************************/
 	private function get_page( $path, $original_path = NULL ) {
 		
-		// Is it a generic folder ?
+		// Is it a folder page ?
 		if ( endswith( $path, '/' ) ) {
-			if ( $page = $this->module_manager->fetch_page( $path . 'index' ) ) {
-				return $page;
-			}
-
-			// Error 404 ?
-			if ( $path == '/' ) {
-				return $this->get_page_404( $original_path );
-			}
-			$path = substr( $path, 0, -1 );
+			$path .= 'index';
 		}
 		
 		// Is it a page ?
@@ -129,8 +131,6 @@ class Qrumble {
 		}
 		throw new Exception( 'Page 500 not found =/' );
 	}
-
-
 }
 
 ?>
