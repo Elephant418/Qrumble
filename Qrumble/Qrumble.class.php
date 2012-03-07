@@ -30,7 +30,9 @@ class Qrumble {
 			if ( contains( $path, '?' ) ) {
 				$path = substr( $url, 0, strpos( $path, '?' ) );
 			}
-			$path = must_endswith( $path, '/' );
+			if ( ! contains( $path, '/' ) ) {
+				$path .= '/';
+			}
 			return $path;
 		};
 		$format_url = function( ) use ( $format_path ) {
@@ -87,7 +89,7 @@ class Qrumble {
 	  PRIVATE METHODS                   
 	 *************************************************************************/
 	private function get_page( $path, $original_path = NULL ) {
-		
+
 		// Is it a folder page ?
 		if ( endswith( $path, '/' ) ) {
 			$path .= 'index';

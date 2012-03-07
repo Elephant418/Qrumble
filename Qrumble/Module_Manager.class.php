@@ -23,7 +23,7 @@ class Module_Manager {
 	public function __construct( $modules = NULL, $themes = NULL ) {
 
 		$format_in_array = function( $param, $default_value ) {
-			if ( is_null( $param ) || is_empty( $param ) ) {
+			if ( is_null( $param ) || empty( $param ) ) {
 				$param = $default_value;
 			} else if ( ! is_array( $param ) ) {
 				$param = array( $param );

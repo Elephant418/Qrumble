@@ -31,21 +31,25 @@ function must_startswith( $hay, $needle ) {
 	if ( ! startswith( $hay, $needle ) ) {
 		$hay = $needle . $hay;
 	}
+	return $hay;
 }
 function must_endswith( $hay, $needle ) {
 	if ( ! endswith( $hay, $needle ) ) {
 		$hay .= $needle;
 	}
+	return $hay;
 }
 function must_not_startswith( $hay, $needle ) {
 	if ( startswith( $hay, $needle ) ) {
 		$hay = substr( $hay, 1 );
 	}
+	return $hay;
 }
 function must_not_endswith( $hay, $needle ) {
 	if ( endswith( $hay, $needle ) ) {
 		$hay = substr( $hay, 0, -1 );
 	}
+	return $hay;
 }
 
 ?>
