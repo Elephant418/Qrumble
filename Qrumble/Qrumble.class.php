@@ -30,9 +30,7 @@ class Qrumble {
 			if ( contains( $path, '?' ) ) {
 				$path = substr( $url, 0, strpos( $path, '?' ) );
 			}
-			if ( ! contains( $path, '/' ) ) {
-				$path .= '/';
-			}
+			$path = must_endswith( $path, '/' );
 			return $path;
 		};
 		$format_url = function( ) use ( $format_path ) {
@@ -55,9 +53,7 @@ class Qrumble {
 				if ( strpos( $base_url, '://' ) != -1 ) {
 					$base_url = substr( $base_url, strpos( $base_url, '://' ) + 3 );
 				}
-				if ( endswith( $base_url, '/' ) ) {
-					$base_url = substr( $base_url, 0, -1 );
-				}
+				$base_url = must_not_endswith( $base_url, '/' );
 				return $base_url;
 			};
 			if ( ! is_array( $base_urls ) ) { 
@@ -103,7 +99,7 @@ class Qrumble {
 		}
 		
 		// Is it a generic page ?
-		$parent = substr( $path, 0, strrpos( $path, '/' ) );
+		$parent = dirname( $path );
 		if ( $page = $this->module_manager->fetch_page( $parent . '/page' ) ) {
 			return $page;
 		}
