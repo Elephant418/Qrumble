@@ -22,25 +22,17 @@ class Module_Manager {
 	 *************************************************************************/
 	public function __construct( $modules = NULL, $themes = NULL ) {
 
-		$format_modules = function( ) use ( $modules ) {
-			if ( is_null( $modules ) ) {
-				$modules = array( 'Qrumble' );
-			} else if ( ! is_array( $modules ) ) {
-				$modules = array( $modules );
+		$format_in_array = function( $param, $default_value ) {
+			if ( is_null( $param ) || is_empty( $param ) ) {
+				$param = $default_value;
+			} else if ( ! is_array( $param ) ) {
+				$param = array( $param );
 			}
-			return $modules;
-		};
-		$format_themes = function( ) use ( $themes ) {
-			if ( is_null( $themes ) ) {
-				$themes = array( 'Basic' );
-			} else if ( ! is_array( $themes ) ) {
-				$themes = array( $themes );
-			}
-			return $themes;
+			return $param;
 		};
 
-		$this->modules = $format_modules( );
-		$this->themes  = $format_themes( );
+		$this->modules = $format_in_array( $modules, array( 'Qrumble' ) );
+		$this->themes  = $format_in_array( $themes, array( 'Basic' ) );
 		$this->modules_root_path = dirname( __FILE__ ) . '/modules/';
 	}
 
