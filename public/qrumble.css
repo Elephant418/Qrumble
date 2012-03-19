@@ -1,0 +1,147 @@
+
+/* =============================================================================
+   Generic tags
+   ========================================================================== */
+
+html {
+	background-color: #F7F8FD;
+	color: #393939;
+	font-family: 'Crimson Text', serif;
+	font-size:   20px;
+	line-height: 30px;
+}
+body {
+	-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: 'Merriweather', serif;
+	line-height: 1.5em;
+	font-size: 20px;
+}
+a.focus,
+a.hover,
+a:hover {
+	color: #A68237;
+}
+
+.container {
+	max-width: 580px;
+	margin: 0 auto;
+}
+
+/* =============================================================================
+   HEADER
+   ========================================================================== */
+
+.header {
+}
+.header .title {
+	position:relative;
+	z-index: 1;
+	margin: 0;
+	padding: 0 10px; 
+	text-align: center;
+	background: #A5B7EA;
+}
+.header .title:after {
+	height: 14px;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 100%;
+	content: '';
+	background: url( './bg_header.png' ) repeat-x 0 bottom;
+	-webkit-transition: all 1s ease-in-out;
+	-moz-transition: all 1s ease-in-out;
+	-o-transition: all 1s ease-in-out;
+	-ms-transition: all 1s ease-in-out;	
+	transition: all 1s ease-in-out;
+}
+.header .title:hover:after {
+	background-position: -22px bottom;
+}
+.header .title a {
+	display: inline-block;
+	padding: 10px 0;
+	color: #F7F8FD;
+	text-decoration: none;
+}
+.header .title a:focus,
+.header .title a:hover,
+.header .title a.hover {
+	color: #393939;
+}
+.header .title em {
+	color: #F7F8FD;
+	font-style : italic;
+}
+.header .nav {
+	font-size: 0;
+	text-align: center;
+	margin: -6px 0 0;
+	padding: 0;
+	list-style: none;
+	border-bottom: 6px solid #A5B7EA;
+	background-color: #e0e1e6;
+}
+.header .nav li {
+	font-size: 20px;
+	display: inline-block;
+	font-family: 'Merriweather', serif;
+}
+.header .nav a {
+	position: relative;
+	display: inline-block;
+	padding: 24px 20px 10px;
+	margin-bottom: -6px;
+	margin-top: 6px;
+	color: #393939;
+	text-decoration: none;
+	border-bottom: 6px solid #A5B7EA;
+}
+.header .nav a:focus,
+.header .nav a.hover,
+.header .nav a:hover {
+	padding-top: 30px;
+	margin-top: 0;
+	top: 6px;
+	border-bottom: 6px solid #A68337;
+	background-color: #F7F8FD;
+}
+.header .nav a.current {
+	border-bottom: 6px solid #393939;
+	background-color: #F7F8FD;
+}
+
+/* =============================================================================
+   MAIN
+   ========================================================================== */
+
+.main {
+	padding: 20px 10px 50px;
+}
+
+/* =============================================================================
+   FOOTER
+   ========================================================================== */
+
+.footer {
+	position: relative;
+	background: #A5B7EA;
+	padding: 10px 10px 50px;
+	font-size: 16px;
+}
+.footer:after {
+	height: 14px;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 100%;
+	content: '';
+	background: url( './bg_footer.png' ) repeat-x 0 top;
+}
