@@ -74,29 +74,46 @@ class Qrumble {
 			}
 		}
 	}
-	public function render( $return = FALSE ) {
-		$page = $this->get_theme_file( $this->request_path );
-		// TODO
-		// parser la page : file_get_html( $path_to_content )
-		// has content_behaviour ?
-		// si oui
-			// has content ?
-			// si non, 404
-			// si oui, fetch content
-			// la donner à la behaviour avec le contenu
-		// Une autre behaviour ?
-		// Si oui, la passer à la behaviour
-		$content = file_get_contents( $page );
-		if ( $return ) {
-			return $content;
-		}
-		echo $content;
+	public function render( ) {
+		$page = $this->get_theme_page( $this->request_path );
+		$content = $page->__toString();
+		return $content;
+	}
+	public function display( ) {
+		echo $this->render( );
 	}
 
 
 	/*************************************************************************
 	  PRIVATE METHODS                   
 	 *************************************************************************/
+	private function get_theme_page( $path ) {
+		if ( ! $theme_file = $this->get_theme_file( $path ) ) {
+			return $this->file_not_found( );
+		}
+		$page = file_get_html( $theme_file );
+		$content_behaviour_file = substr( $theme_file, 0, strrpos( $theme_file, '.' ) ) . '.content.php';
+		if ( is_file( $content_behaviour_file ) ) {
+			if ( ! $data_file = $this->get_data_file( $path ) ) {
+				return $this->file_not_found( );
+			}
+			// TODO: si oui, fetch content
+			// la donner à la behaviour avec le contenu
+		}
+		$simple_behaviour_file = substr( $theme_file, 0, strrpos( $theme_file, '.' ) ) . '.behaviour.php';
+		if ( is_file( $simple_behaviour_file ) ) {
+			//TODO: Généraliser l'ouverture et le passage de variable à une behaviour			
+			$base_url = $this->base_url;
+			include( $simple_behaviour_file );
+		}
+		return $page;
+	}
+	private function get_data_file( $data_path ) {
+		if ( $file = $this->module_manager->fetch_data_file( $data_path ) ) {
+			return $file;
+		}
+		return false;
+	}
 	private function get_theme_file( $path ) {
 		$router = new Router( );
 		$theme_paths = $router->theme_paths( $path );
@@ -107,7 +124,7 @@ class Qrumble {
 			}
 		}
 
-		return $this->file_not_found( );
+		return false;
 	}
 	private function file_not_found( ) {
 		if ( ! is_null( $this->previous_error ) ) {
@@ -115,7 +132,7 @@ class Qrumble {
 		}
 		$this->previous_error = '404';
 		header('HTTP/1.1 404 Not Found');
-		return $this->get_theme_file( '/system/404' );
+		return $this->get_theme_page( '/system/404' );
 	}
 	private function internal_error( ) {
 		if ( $this->previous_error == '500' ) {
@@ -123,7 +140,7 @@ class Qrumble {
 		}
 		$this->previous_error = '500';
 		header('HTTP/1.1 500 Internal Server Error');
-		return $this->get_theme_file( '/system/500' );
+		return $this->get_theme_page( '/system/500' );
 	}
 }
 

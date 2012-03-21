@@ -10,6 +10,6 @@ $qrumble->add_configuration( 'http://blog.zilliox.me', array( 'Blog', 'Qrumble' 
 // Dev
 $qrumble->add_configuration( 'http://blog.zilliox.me/dev/', array( 'Blog', 'Qrumble' ), array( 'Blog', 'Basic' ) );
 
-$qrumble->render( );
+$qrumble->display( );
 
 ?>

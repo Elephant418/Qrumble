@@ -34,7 +34,7 @@ class Router extends Router_Base {
 		
 		// Generic page
 		$dirname = dirname( $path );
-		$paths[ ] = $dirname . '/page';
+		$paths[ ] = $dirname . '/default';
 
 		// Recursive		
 		if ( strlen( $dirname ) > 1 ) {

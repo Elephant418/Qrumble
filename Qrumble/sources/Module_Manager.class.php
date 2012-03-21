@@ -21,8 +21,6 @@ class Module_Manager {
 	/*************************************************************************
 	  CONSTRUCTOR                   
 	 *************************************************************************/
-	public function __construct( ) {
-	}
 	public function initialize( $modules = NULL, $themes = NULL ) {
 		$format_in_array = function( $param, $default_value ) {
 			if ( is_null( $param ) || empty( $param ) ) {
@@ -42,10 +40,16 @@ class Module_Manager {
 	/*************************************************************************
 	  PUBLIC METHODS                   
 	 *************************************************************************/
-	public function fetch_theme_file( $page ) {
+	public function fetch_data_file( $data_path ) {
+		if ( $file_path = $this->fetch_file( '/data/' . $data_path . '.ini' ) ) {
+			return $file_path;
+		}
+		return false;
+	}
+	public function fetch_theme_file( $page_path ) {
 		foreach ( self::$themes as $theme ) {
-			if ( $path = $this->fetch_file( '/themes/' . $theme . $page . '.html' ) ) {
-				return $path;
+			if ( $file_path = $this->fetch_file( '/themes/' . $theme . $page_path . '.html' ) ) {
+				return $file_path;
 			}
 		}
 		return false;
