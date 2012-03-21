@@ -1,3 +1,7 @@
 TODO :
+* Manage data
+* Create generic template
+* Create generic blog template
 * Tests
-* Commentaires sur méthodes
+* Class & Methods comments
+* README
