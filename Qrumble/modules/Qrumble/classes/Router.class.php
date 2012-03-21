@@ -7,41 +7,6 @@
 
 class Router extends Router_Base {
 
-
-	/*************************************************************************
-	  ATTRIBUTES                 
-	 *************************************************************************/
-
-
-	/*************************************************************************
-	  CONSTRUCTOR                   
-	 *************************************************************************/
-	public function __construct( ) {
-	}
-
-
-	/*************************************************************************
-	  PUBLIC METHODS                   
-	 *************************************************************************/
-	public function theme_paths( $path, $paths = array( ) ) {
-
-		// Is it a folder page ?
-		if ( endswith( $path, '/' ) ) {
-			$paths[ ] = $path . 'index';
-		} else {
-			$paths[ ] = $path;
-		}
-		
-		// Generic page
-		$dirname = dirname( $path );
-		$paths[ ] = $dirname . '/default';
-
-		// Recursive		
-		if ( strlen( $dirname ) > 1 ) {
-			return $this->theme_paths( $dirname, $paths );
-		}
-		return $paths; 
-	}
 }
 
 ?>
