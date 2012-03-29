@@ -41,15 +41,15 @@ class Module_Manager {
 	  PUBLIC METHODS                   
 	 *************************************************************************/
 	public function fetch_data_file( $data_path ) {
-		if ( $file_path = $this->fetch_file( '/data/' . $data_path . '.ini' ) ) {
-			return $file_path;
-		}
-		return false;
+		return $this->fetch_file( '/datas/' . $data_path . '.md' );
 	}
-	public function fetch_theme_file( $page_path ) {
+	public function fetch_theme_page( $page_path ) {
+		return $this->fetch_theme_file( $page_path . '.html' );
+	}
+	public function fetch_theme_file( $file_path ) {
 		foreach ( self::$themes as $theme ) {
-			if ( $file_path = $this->fetch_file( '/themes/' . $theme . $page_path . '.html' ) ) {
-				return $file_path;
+			if ( $absolute_file_path = $this->fetch_file( '/themes/' . $theme . $file_path ) ) {
+				return $absolute_file_path;
 			}
 		}
 		return false;
@@ -73,6 +73,7 @@ class Module_Manager {
 		foreach ( self::$modules as $module ) {
 			foreach ( $module_paths as $module_path ) {
 				$absolute_file_path = self::$modules_root_path . $module . $module_path;
+				// echo $absolute_file_path . '<br>';
 				if ( file_exists( $absolute_file_path ) ) {
 					return $absolute_file_path;
 				}
