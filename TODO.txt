@@ -1,7 +1,36 @@
-TODO :
-* Manage data
-* Create generic template
-* Create generic blog template
-* Tests
-* Class & Methods comments
-* README
+* Amélioration 
+** Modifier le module_Manager, pour qu'il devienne le File_Accessor
+** Créer des surcharges du File_Accessor : Design_Accessor, Data_Accessor et Class_Accessor
+** Modifier le Router pour qu'il ait 3 méthodes : design_fallback(), data_fallback() et mapping()
+** Simplifier Qrumble pour qu'il fasse moins de choses. Gestion de cas normal et cas d'erreur via exception
+** Les urls des pages d'erreurs sont à placer dna sle router
+
+* Données
+** Créer une classe Data_Entity
+** Créer une classe abstraite Data_Attribute
+** Créer une factory Data_Attribute_Factory qui renvoie la bonne classe en fonction du fichier
+** Créer des parser de fichier générique : Data_Attribute_Csv, Data_Attribute_Md, Data_Attribute_Ini
+** Créer une classe Data_List qui gère une liste de donnée 
+*** Gestion des liste comme un tableau : pop() et push()
+*** Comme le SQL : order(), group(), where(), attr()
+*** Création de cache pour les listes de données
+
+* Vues
+** Génération des liens avec le path prefix
+** Génération de menu
+** Gérer les flux RSS et sitemap.xml
+
+* Maquette
+** Découpage de la page
+** Génération de page avec paramètre
+
+* Configuration
+** Les urls et les modules sont à placer dans un fichier de configuration
+
+* Plus tard
+** Create generic template
+** Create generic blog template
+** Tests
+** Class & Methods comments
+** README
+** Website
