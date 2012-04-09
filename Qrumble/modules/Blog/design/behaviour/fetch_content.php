@@ -1,7 +1,10 @@
 <?php
 
 if ( $main_content ) {
-	$page->find( '.main' )[0]->innertext = $main_content;
+	$mains = $page->find( '.main' );
+	if ( count( $mains ) > 0 ) {
+		$mains[ 0 ]->innertext = $main_content;
+	}
 }
 
 ?>
