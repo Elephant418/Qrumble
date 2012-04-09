@@ -46,7 +46,7 @@ class Qrumble {
 	/*************************************************************************
 	  PUBLIC METHODS                   
 	 *************************************************************************/
-	public function add_configuration( $base_urls, $modules = NULL, $themes = NULL ) {
+	public function add_configuration( $base_urls, $modules = NULL ) {
 
 		$format_base_urls = function( $base_urls ) {
 			$format_base_url = function( $base_url ) {
@@ -70,12 +70,12 @@ class Qrumble {
 				$this->base_url = $base_url;
 				$this->request_path = substr( $this->request_url, strlen( $base_url ) );
 				$this->module_manager = new Module_Manager( );
-				$this->module_manager->initialize( $modules, $themes );
+				$this->module_manager->initialize( $modules );
 			}
 		}
 	}
 	public function render( ) {
-		$page = $this->get_theme_page( $this->request_path );
+		$page = $this->get_design_page( $this->request_path );
 		$content = $page->__toString();
 		return $content;
 	}
@@ -87,19 +87,18 @@ class Qrumble {
 	/*************************************************************************
 	  PRIVATE METHODS                   
 	 *************************************************************************/
-	private function get_theme_page( $path ) {
-		if ( ! $theme_file = $this->fetch_theme_page( $path ) ) {
+	private function get_design_page( $path ) {
+		if ( ! $design_file = $this->fetch_design_page( $path ) ) {
 			return $this->file_not_found( );
 		}
-		$page = file_get_html( $theme_file );	
+		$page = file_get_html( $design_file );	
 		$scripts = $page->find( 'script[type="text/php"]' );
 		foreach ( $scripts as $script ) {
 			$main_content = FALSE;
 			if ( $script->rel == "main_content" ) {
-				if ( ! $main_content_file = $this->fetch_data_file( $path ) ) {
+				if ( ! $main_content = $this->file_get_data( $path ) ) {
 					return $this->file_not_found( );
 				}
-				$main_content = $this->file_get_data( $main_content_file );
 			}
 			$page = $this->execute_behaviour( $page, $script->src, $main_content );
 			$script->outertext = '';
@@ -113,7 +112,7 @@ class Qrumble {
 	 *************************************************************************/
 	// TODO: Faire une fonction hors contexte objet
 	private function execute_behaviour( $page, $behaviour_path, $main_content = FALSE ) {
-		$behaviour_file = $this->module_manager->fetch_theme_file( $behaviour_path );
+		$behaviour_file = $this->module_manager->fetch_design_file( $behaviour_path );
 		if ( is_file( $behaviour_file ) ) {
 			$base_url = $this->base_url;
 			include( $behaviour_file );
@@ -125,27 +124,21 @@ class Qrumble {
 	/*************************************************************************
 	  PRIVATE FILE ACCESS METHODS                   
 	 *************************************************************************/
-	private function fetch_theme_page( $path ) {
+	private function fetch_design_page( $path ) {
 		$router = new Router( );
-		$theme_paths = $router->theme_paths( $path );
+		$design_paths = $router->design_paths( $path );
 
-		foreach( $theme_paths as $theme_path ) {
-			if ( $file = $this->module_manager->fetch_theme_page( $theme_path ) ) {
+		foreach( $design_paths as $design_path ) {
+			if ( $file = $this->module_manager->fetch_design_page( $design_path ) ) {
 				return $file;
 			}
 		}
 
 		return false;
 	}
-	private function fetch_data_file( $path ) {
-		// TODO: Utiliser le Router pour faire le mapping url -> data_path
-		return $this->module_manager->fetch_data_file( $path );
-	}
-	private function file_get_data( $data_file ) {
-		if ( is_file( $data_file ) ) {
-			return Markdown( file_get_contents( $data_file ) );
-		}
-		return false;
+	private function file_get_data( $data_path ) {
+		$data = Data::from_relative_path( $data_path );
+		return $data->parse( );
 	}
 
 
@@ -158,7 +151,7 @@ class Qrumble {
 		}
 		$this->previous_error = '404';
 		header('HTTP/1.1 404 Not Found');
-		return $this->get_theme_page( '/system/404' );
+		return $this->get_design_page( '/system/404' );
 	}
 	private function internal_error( ) {
 		if ( $this->previous_error == '500' ) {
@@ -166,7 +159,7 @@ class Qrumble {
 		}
 		$this->previous_error = '500';
 		header('HTTP/1.1 500 Internal Server Error');
-		return $this->get_theme_page( '/system/500' );
+		return $this->get_design_page( '/system/500' );
 	}
 }
 

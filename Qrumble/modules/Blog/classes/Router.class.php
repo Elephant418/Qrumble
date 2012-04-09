@@ -11,7 +11,7 @@ class Router extends Router_Base {
 	/*************************************************************************
 	  PUBLIC METHODS                   
 	 *************************************************************************/
-	public function theme_paths( $path, $paths = array( ) ) {
+	public function design_paths( $path, $paths = array( ) ) {
 
 		// Is it a folder page ?
 		if ( endswith( $path, '/' ) ) {
@@ -26,7 +26,7 @@ class Router extends Router_Base {
 
 		// Recursive		
 		if ( strlen( $dirname ) > 1 ) {
-			return $this->theme_paths( $dirname, $paths );
+			return $this->design_paths( $dirname, $paths );
 		}
 		return $paths; 
 	}

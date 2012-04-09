@@ -11,6 +11,8 @@ require( dirname( __FILE__ ) . '/sources/markdown.php' );
 require( dirname( __FILE__ ) . '/sources/simple_html_dom.php' );
 require( dirname( __FILE__ ) . '/sources/Qrumble.class.php' );
 require( dirname( __FILE__ ) . '/sources/autoload.php' );
+require( dirname( __FILE__ ) . '/sources/Data.class.php' );
+require( dirname( __FILE__ ) . '/sources/Data_Accessor.class.php' );
 require( dirname( __FILE__ ) . '/sources/Module_Manager.class.php' );
 require( dirname( __FILE__ ) . '/sources/Router_Base.class.php' );
 

@@ -18,7 +18,7 @@ class Router_Base {
 	/*************************************************************************
 	  PUBLIC METHODS                   
 	 *************************************************************************/
-	public function theme_paths( $path ) {
+	public function design_paths( $path ) {
 		return array( $path ); 
 	}
 }

@@ -15,24 +15,35 @@ class Module_Manager {
 	public static $initialized = FALSE;
 	public static $modules_root_path;
 	public static $modules;
-	public static $themes;
+	public static $modules_path;
 
 
 	/*************************************************************************
 	  CONSTRUCTOR                   
 	 *************************************************************************/
-	public function initialize( $modules = NULL, $themes = NULL ) {
-		$format_in_array = function( $param, $default_value ) {
-			if ( is_null( $param ) || empty( $param ) ) {
-				$param = $default_value;
-			} else if ( ! is_array( $param ) ) {
-				$param = array( $param );
+	public function initialize( $modules = NULL ) {
+		$format_modules = function( $modules, $default_value ) {
+			$formated_modules = array( );
+			$default_root_path = dirname( dirname( __FILE__ ) ). '/modules/';
+			if ( is_null( $modules ) || empty( $modules ) ) {
+				$modules = $default_value;
+			} else if ( ! is_array( $modules ) ) {
+				$modules = array( $modules );
 			}
-			return $param;
+			foreach ( $modules as $key => $value ) {
+				if ( is_numeric( $key ) ) {
+					$module_name = $value;
+					$module_path = $default_root_path . $module_name . '/';
+				} else {
+					$module_name = $key;
+					$module_path = $value . '/' . $module_name . '/';
+				}
+				$formated_modules[ $module_name ] = $module_path;
+			}
+			return $formated_modules;
 		};
-		self::$modules = $format_in_array( $modules, array( 'Qrumble' ) );
-		self::$themes  = $format_in_array( $themes, array( 'Basic' ) );
-		self::$modules_root_path = dirname( dirname( __FILE__ ) ). '/modules/';
+		self::$modules_path = $format_modules( $modules, array( 'Qrumble' ) );
+		self::$modules = array_keys( self::$modules_path );
 		self::$initialized = TRUE;
 	}
 
@@ -41,16 +52,17 @@ class Module_Manager {
 	  PUBLIC METHODS                   
 	 *************************************************************************/
 	public function fetch_data_file( $data_path ) {
-		return $this->fetch_file( '/datas/' . $data_path . '.md' );
+		return $this->fetch_file( '/datas/' . $data_path );
 	}
-	public function fetch_theme_page( $page_path ) {
-		return $this->fetch_theme_file( $page_path . '.html' );
+	public function fetch_data_files( $data_path ) {
+		return $this->fetch_files( '/datas/' . $data_path );
 	}
-	public function fetch_theme_file( $file_path ) {
-		foreach ( self::$themes as $theme ) {
-			if ( $absolute_file_path = $this->fetch_file( '/themes/' . $theme . $file_path ) ) {
-				return $absolute_file_path;
-			}
+	public function fetch_design_page( $page_path ) {
+		return $this->fetch_design_file( $page_path . '.html' );
+	}
+	public function fetch_design_file( $file_path ) {
+		if ( $absolute_file_path = $this->fetch_file( '/design/' . $file_path ) ) {
+			return $absolute_file_path;
 		}
 		return false;
 	}
@@ -66,13 +78,13 @@ class Module_Manager {
 	/*************************************************************************
 	  PRIVATE METHODS                   
 	 *************************************************************************/
-	private function fetch_file( $module_paths ) {
-		if ( ! is_array( $module_paths ) ) {
-			$module_paths = array( $module_paths );
+	private function fetch_file( $relative_paths ) {
+		if ( ! is_array( $relative_paths ) ) {
+			$relative_paths = array( $relative_paths );
 		}
-		foreach ( self::$modules as $module ) {
-			foreach ( $module_paths as $module_path ) {
-				$absolute_file_path = self::$modules_root_path . $module . $module_path;
+		foreach ( self::$modules_path as $module_path ) {
+			foreach ( $relative_paths as $relative_path ) {
+				$absolute_file_path = $module_path . $relative_path;
 				// echo $absolute_file_path . '<br>';
 				if ( file_exists( $absolute_file_path ) ) {
 					return $absolute_file_path;
@@ -80,6 +92,17 @@ class Module_Manager {
 			}
 		}
 		return false;
+	}
+	private function fetch_files( $relative_folder ) {
+		$files = array( );
+		foreach ( self::$modules_path as $module_path ) {
+			$absolute_file_path = $module_path . $relative_folder;
+			// echo $absolute_file_path . '<br>';
+			if ( file_exists( $absolute_file_path ) ) {
+				$files[ ] = $absolute_file_path;
+			}
+		}
+		return $files;
 	}
 
 
